@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 use function PHPUnit\Framework\directoryExists;
 
@@ -19,12 +21,12 @@ use function PHPUnit\Framework\directoryExists;
 
 Route::get('/', function (Request $request) {
     
-        $username=auth()->user()->username;
+        // $username=auth()->user()->username;
         // File::makeDirectory(public_path()."/opt/myprogram/$username", 0755, true);
         // $file=auth()->user()->username;
        
-        Storage::append("/opt/myprogram/$username/",$username);
-        $path=public_path()."/opt/myprogram";
+        // Storage::append("/opt/myprogram/$username/",$username);
+        // $path=public_path()."/opt/myprogram";
         // $dir = new DirectoryIterator($path);
         // foreach ($dir as $fileinfo) {
         //     if ($fileinfo->isDir() && !$fileinfo->isDot()) {
@@ -32,12 +34,19 @@ Route::get('/', function (Request $request) {
         //     }
         // }
 
-        $files = Storage::disk('local')->allFiles('opt/myprogram');
-        return $files;
+        // $files = Storage::disk('local')->allFiles('opt/myprogram');
+        // return $files;
         
+        $process = new Process(['ps', '-aux']);
+        $process->run();
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        echo $process->getOutput();
    
 
-    // return view('welcome');
+    return view('welcome');
 });
 
 Auth::routes();
