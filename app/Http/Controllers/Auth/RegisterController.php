@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -64,12 +67,25 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
+
     {
-        return User::create([
+       
+
+        
+       return  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username'=>$data['username'],
             'password' => Hash::make($data['password']),
         ]);
+      
+
+      
+       
+        
+        
+
+          
+           
     }
 }
